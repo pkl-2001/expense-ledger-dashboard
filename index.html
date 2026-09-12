@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ledger — Personal Finance Dashboard</title>
+</head>
+<body>
+
+  <div class="app">
+
+    <nav class="rail">
+      <div class="rail-mark">L</div>
+      <button class="rail-btn" data-view="overview">Overview</button>
+      <button class="rail-btn" data-view="ledger">Ledger</button>
+    </nav>
+
+    <main class="main">
+
+      <header class="topbar">
+        <div>
+          <p>Personal Ledger</p>
+          <h1 id="pageTitle">Overview</h1>
+        </div>
+        <div class="topbar-actions">
+          <input type="search" id="searchInput" placeholder="Search entries…">
+          <button id="addEntryBtn">+ Add entry</button>
+        </div>
+      </header>
+
+      <!-- OVERVIEW VIEW -->
+      <section id="view-overview" class="view">
+
+        <div class="hero-stamp">
+          <div>
+            <span>Net balance</span><br>
+            <span id="netBalance">₹0</span><br>
+            <span id="netBalanceSub">—</span>
+          </div>
+          <div>
+            <p>In — this month: <span id="monthIncome">₹0</span></p>
+            <p>Out — this month: <span id="monthExpense">₹0</span></p>
+            <p>Savings rate: <span id="savingsRate">0%</span></p>
+          </div>
+        </div>
+
+        <h2>Cash flow, last 6 months</h2>
+        <p>(chart goes here — added in Stage 3)</p>
+
+        <h2>Where it went — this month</h2>
+        <p>(chart goes here — added in Stage 3)</p>
+
+        <h2>Recent entries</h2>
+        <table id="recentTable">
+          <thead>
+            <tr><th>Date</th><th>Description</th><th>Category</th><th>Amount</th></tr>
+          </thead>
+          <tbody id="recentBody">
+            <tr><td colspan="4">No data yet — added in Stage 3</td></tr>
+          </tbody>
+        </table>
+
+      </section>
+
+      <!-- LEDGER (full table) VIEW -->
+      <section id="view-ledger" class="view">
+        <h2>Full ledger</h2>
+        <table id="fullTable">
+          <thead>
+            <tr><th>Date</th><th>Description</th><th>Category</th><th>Amount</th><th></th></tr>
+          </thead>
+          <tbody id="fullBody">
+            <tr><td colspan="5">No data yet — added in Stage 3</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+    </main>
+  </div>
+
+</body>
+</html>
