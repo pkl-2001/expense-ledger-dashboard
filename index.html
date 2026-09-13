@@ -18,14 +18,17 @@
   --positive: #3F7A50; --negative: #A03F32;
 }
 * { box-sizing: border-box; }
-body { margin: 0; background: var(--bg); color: var(--text); font-family: 'IBM Plex Sans', sans-serif; }
+body { margin: 0; background: var(--bg); color: var(--text); font-family: 'IBM Plex Sans', sans-serif; transition: background 0.25s ease, color 0.25s ease; }
 h1, h2 { font-family: 'Source Serif 4', serif; font-weight: 600; margin: 0; }
+.eyebrow-plain { color: var(--text-dim); font-size: 0.85rem; margin: 0 0 2px; }
 .app { display: flex; min-height: 100vh; flex-direction: column; }
 @media (min-width: 720px) { .app { flex-direction: row; } }
-.rail { display: flex; background: var(--surface); border-bottom: 1px solid var(--rule); align-items: center; padding: 10px 16px; gap: 10px; }
+.rail { display: flex; background: var(--surface); border-bottom: 1px solid var(--rule); align-items: center; padding: 10px 16px; gap: 10px; flex-shrink: 0; }
 @media (min-width: 720px) { .rail { width: 64px; flex-direction: column; border-bottom: none; border-right: 1px solid var(--rule); padding: 20px 0; } }
 .rail-mark { font-family: 'Source Serif 4', serif; font-size: 1.2rem; color: var(--gold); border: 1px solid var(--gold); width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; border-radius: 4px; }
-.rail-btn { border: none; background: transparent; color: var(--text-dim); border-radius: 6px; padding: 8px 12px; cursor: pointer; font-family: 'IBM Plex Sans', sans-serif; }
+@media (min-width: 720px) { .rail-mark { margin-bottom: 18px; width: 34px; height: 34px; font-size: 1.4rem; } }
+.rail-btn { width: 36px; height: 36px; border: none; background: transparent; color: var(--text-dim); border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+.rail-btn svg { width: 18px; height: 18px; fill: currentColor; }
 .rail-btn:hover { color: var(--text); background: var(--gold-soft); }
 .rail-btn.is-active { color: var(--gold); background: var(--gold-soft); }
 .theme-toggle { margin-left: auto; }
@@ -33,195 +36,311 @@ h1, h2 { font-family: 'Source Serif 4', serif; font-weight: 600; margin: 0; }
 .main { flex: 1; padding: 20px 16px 60px; max-width: 1100px; width: 100%; }
 @media (min-width: 720px) { .main { padding: 32px 40px 60px; } }
 .topbar { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 22px; gap: 14px; flex-wrap: wrap; }
-.topbar-actions { display: flex; gap: 8px; flex-wrap: wrap; }
-input, select { background: var(--surface); border: 1px solid var(--rule); color: var(--text); border-radius: 6px; padding: 9px 12px; }
-button#addEntryBtn { background: var(--gold); color: var(--bg); border: none; border-radius: 6px; padding: 9px 16px; font-weight: 600; cursor: pointer; }
+.topbar h1 { font-size: 1.5rem; }
+@media (min-width: 720px) { .topbar h1 { font-size: 1.9rem; } }
+.topbar-actions { display: flex; gap: 8px; flex-wrap: wrap; width: 100%; }
+@media (min-width: 720px) { .topbar-actions { width: auto; } }
+.search-input, select, input[type="text"], input[type="number"], input[type="date"] { background: var(--surface); border: 1px solid var(--rule); color: var(--text); border-radius: 6px; padding: 9px 12px; font-family: 'IBM Plex Sans', sans-serif; font-size: 0.9rem; }
+.search-input { flex: 1; min-width: 0; }
+.btn-primary { background: var(--gold); color: var(--bg); border: none; border-radius: 6px; padding: 9px 16px; font-weight: 600; font-size: 0.9rem; cursor: pointer; white-space: nowrap; }
+.btn-primary:hover { filter: brightness(1.08); }
+.btn-ghost { background: transparent; border: 1px solid var(--rule); color: var(--text); border-radius: 6px; padding: 9px 16px; cursor: pointer; }
 .view.is-hidden { display: none !important; }
-.hero-stamp { display: flex; justify-content: space-between; background: var(--surface); border: 1px solid var(--rule); border-radius: 10px; padding: 22px; margin-bottom: 20px; flex-wrap: wrap; gap: 20px; }
-.hero-stamp span:first-child { color: var(--text-dim); font-size: 0.85rem; }
-#netBalance { font-family: 'Source Serif 4', serif; font-size: 2.4rem; font-weight: 700; color: var(--gold); }
-.grid-2 { display: grid; grid-template-columns: 1fr; gap: 16px; }
-@media (min-width: 900px) { .grid-2 { grid-template-columns: 1.3fr 1fr; } }
+.hero-stamp { display: flex; justify-content: space-between; align-items: center; background: var(--surface); border: 1px solid var(--rule); border-radius: 10px; padding: 22px; margin-bottom: 20px; flex-wrap: wrap; gap: 20px; }
+@media (min-width: 720px) { .hero-stamp { padding: 28px 32px; } }
+.hero-figure { display: flex; flex-direction: column; }
+.hero-label { color: var(--text-dim); font-size: 0.85rem; margin-bottom: 4px; }
+.hero-number { font-family: 'Source Serif 4', serif; font-size: 2.4rem; font-weight: 700; line-height: 1; color: var(--gold); }
+@media (min-width: 720px) { .hero-number { font-size: 3.2rem; } }
+.hero-sub { color: var(--text-dim); font-size: 0.85rem; margin-top: 6px; }
+.hero-mini-stats { display: flex; gap: 24px; flex-wrap: wrap; }
+.mini-stat { display: flex; flex-direction: column; gap: 4px; }
+.mini-label { color: var(--text-dim); font-size: 0.78rem; }
+.mini-value { font-family: 'IBM Plex Mono', monospace; font-size: 1.05rem; font-weight: 500; }
+.mini-value.positive { color: var(--positive); }
+.mini-value.negative { color: var(--negative); }
+.grid-2 { display: grid; grid-template-columns: 1fr; gap: 16px; margin-bottom: 16px; }
+@media (min-width: 900px) { .grid-2 { grid-template-columns: 1.3fr 1fr; gap: 20px; } }
 .panel { background: var(--surface); border: 1px solid var(--rule); border-radius: 10px; padding: 18px; margin-bottom: 16px; overflow-x: auto; }
-.chart-wrap { position: relative; height: 220px; }
+@media (min-width: 720px) { .panel { padding: 22px 24px; margin-bottom: 20px; } }
+.panel-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+.panel-head h2 { font-size: 1rem; }
+@media (min-width: 720px) { .panel-head h2 { font-size: 1.1rem; } }
+.chart-wrap { position: relative; height: 220px; width: 100%; }
+.link-quiet { color: var(--gold); font-size: 0.85rem; text-decoration: none; }
+.link-quiet:hover { text-decoration: underline; }
 .legend { list-style: none; padding: 0; margin: 14px 0 0; display: flex; flex-direction: column; gap: 8px; }
 .legend li { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--text-dim); }
-.legend .swatch { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+.legend .swatch { width: 10px; height: 10px; border-radius: 2px; display: inline-block; flex-shrink: 0; }
 .legend .amt { margin-left: auto; font-family: 'IBM Plex Mono', monospace; color: var(--text); }
-table { width: 100%; border-collapse: collapse; min-width: 480px; }
-th { text-align: left; color: var(--text-dim); font-weight: 500; font-size: 0.75rem; text-transform: uppercase; border-bottom: 1px solid var(--rule); padding: 8px 6px; }
-td { padding: 10px 6px; border-bottom: 1px solid var(--rule); font-size: 0.87rem; }
-td.num, th.num { text-align: right; font-family: 'IBM Plex Mono', monospace; }
+.ledger-table { width: 100%; border-collapse: collapse; min-width: 480px; }
+.ledger-table th { text-align: left; color: var(--text-dim); font-weight: 500; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.03em; border-bottom: 1px solid var(--rule); padding: 8px 6px; }
+.ledger-table td { padding: 10px 6px; border-bottom: 1px solid var(--rule); font-size: 0.87rem; white-space: nowrap; }
+.ledger-table td.num, .ledger-table th.num { text-align: right; font-family: 'IBM Plex Mono', monospace; }
+.ledger-table tr:last-child td { border-bottom: none; }
 .amount-positive { color: var(--positive); }
 .amount-negative { color: var(--negative); }
 .cat-pill { display: inline-block; padding: 2px 9px; border-radius: 999px; font-size: 0.74rem; background: var(--gold-soft); color: var(--gold); }
+.del-btn { background: none; border: none; color: var(--text-dim); cursor: pointer; font-size: 0.85rem; }
+.del-btn:hover { color: var(--negative); }
+.filter-head { flex-wrap: wrap; gap: 10px; }
+.filters { display: flex; gap: 8px; flex-wrap: wrap; }
+.modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 50; padding: 16px; }
+.modal-backdrop.is-hidden { display: none !important; }
+.modal { background: var(--surface-raised); border: 1px solid var(--rule); border-radius: 10px; padding: 24px; width: 380px; max-width: 100%; display: flex; flex-direction: column; gap: 14px; max-height: 90vh; overflow-y: auto; }
+.modal h2 { margin-bottom: 4px; }
+.modal label { display: flex; flex-direction: column; gap: 6px; font-size: 0.85rem; color: var(--text-dim); flex: 1; }
+.modal input, .modal select { width: 100%; }
+.form-row { display: flex; gap: 12px; }
+.modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 6px; }
+@media (max-width: 480px) { .hero-mini-stats { gap: 16px; } .mini-value { font-size: 0.95rem; } }
 </style>
 </head>
 <body data-theme="ink">
   <div class="app">
     <nav class="rail">
       <div class="rail-mark">L</div>
-      <button class="rail-btn is-active" data-view="overview">Overview</button>
-      <button class="rail-btn" data-view="ledger">Ledger</button>
-      <button class="rail-btn theme-toggle" id="themeToggle">Theme</button>
+      <button class="rail-btn is-active" data-view="overview" title="Overview">
+        <svg viewBox="0 0 24 24"><path d="M4 13h6V4H4v9zm0 7h6v-5H4v5zm10 0h6V11h-6v9zm0-16v5h6V4h-6z"/></svg>
+      </button>
+      <button class="rail-btn" data-view="ledger" title="Ledger">
+        <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 9h8M8 13h8M8 17h5" stroke="currentColor" stroke-width="1.6"/></svg>
+      </button>
+      <button class="rail-btn theme-toggle" title="Flip page (theme)">
+        <svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 100 18 9 9 0 010-18zm0 2v14a7 7 0 010-14z"/></svg>
+      </button>
     </nav>
     <main class="main">
       <header class="topbar">
         <div>
-          <p>Personal Ledger</p>
+          <p class="eyebrow-plain">Personal Ledger</p>
           <h1 id="pageTitle">Overview</h1>
         </div>
         <div class="topbar-actions">
-          <input type="search" id="searchInput" placeholder="Search entries…">
-          <button id="addEntryBtn" disabled title="Added in Stage 4">+ Add entry</button>
+          <input type="search" id="searchInput" placeholder="Search entries…" class="search-input">
+          <button class="btn-primary" id="addEntryBtn">+ Add entry</button>
         </div>
       </header>
       <section id="view-overview" class="view">
         <div class="hero-stamp">
-          <div>
-            <span>Net balance</span><br>
-            <span id="netBalance">₹0</span><br>
-            <span id="netBalanceSub" style="color:var(--text-dim); font-size:0.85rem;">—</span>
+          <div class="hero-figure">
+            <span class="hero-label">Net balance</span>
+            <span class="hero-number" id="netBalance">₹0</span>
+            <span class="hero-sub" id="netBalanceSub">—</span>
           </div>
-          <div>
-            <p>In — this month: <span id="monthIncome">₹0</span></p>
-            <p>Out — this month: <span id="monthExpense">₹0</span></p>
-            <p>Savings rate: <span id="savingsRate">0%</span></p>
+          <div class="hero-mini-stats">
+            <div class="mini-stat"><span class="mini-label">In — this month</span><span class="mini-value positive" id="monthIncome">₹0</span></div>
+            <div class="mini-stat"><span class="mini-label">Out — this month</span><span class="mini-value negative" id="monthExpense">₹0</span></div>
+            <div class="mini-stat"><span class="mini-label">Savings rate</span><span class="mini-value" id="savingsRate">0%</span></div>
           </div>
         </div>
         <div class="grid-2">
-          <div class="panel">
-            <h2>Cash flow, last 6 months</h2>
-            <div class="chart-wrap"><canvas id="flowChart"></canvas></div>
-          </div>
-          <div class="panel">
-            <h2>Where it went — this month</h2>
-            <div class="chart-wrap"><canvas id="categoryChart"></canvas></div>
-            <ul class="legend" id="categoryLegend"></ul>
-          </div>
+          <div class="panel"><div class="panel-head"><h2>Cash flow, last 6 months</h2></div><div class="chart-wrap"><canvas id="flowChart"></canvas></div></div>
+          <div class="panel"><div class="panel-head"><h2>Where it went — this month</h2></div><div class="chart-wrap"><canvas id="categoryChart"></canvas></div><ul class="legend" id="categoryLegend"></ul></div>
         </div>
         <div class="panel">
-          <h2>Recent entries</h2>
-          <table id="recentTable">
-            <thead><tr><th>Date</th><th>Description</th><th>Category</th><th class="num">Amount</th></tr></thead>
-            <tbody id="recentBody"></tbody>
-          </table>
+          <div class="panel-head"><h2>Recent entries</h2><a href="#" class="link-quiet" id="seeAllLink">See full ledger →</a></div>
+          <table class="ledger-table" id="recentTable"><thead><tr><th>Date</th><th>Description</th><th>Category</th><th class="num">Amount</th></tr></thead><tbody id="recentBody"></tbody></table>
         </div>
       </section>
       <section id="view-ledger" class="view is-hidden">
         <div class="panel">
-          <h2>Full ledger</h2>
-          <table id="fullTable">
-            <thead><tr><th>Date</th><th>Description</th><th>Category</th><th class="num">Amount</th></tr></thead>
-            <tbody id="fullBody"></tbody>
-          </table>
+          <div class="panel-head filter-head">
+            <h2>Full ledger</h2>
+            <div class="filters">
+              <select id="filterCategory"><option value="all">All categories</option></select>
+              <select id="filterType"><option value="all">All entries</option><option value="income">Income only</option><option value="expense">Expenses only</option></select>
+            </div>
+          </div>
+          <table class="ledger-table" id="fullTable"><thead><tr><th>Date</th><th>Description</th><th>Category</th><th class="num">Amount</th><th></th></tr></thead><tbody id="fullBody"></tbody></table>
         </div>
       </section>
     </main>
   </div>
+  <div class="modal-backdrop is-hidden" id="modalBackdrop">
+    <form class="modal" id="entryForm">
+      <h2>New entry</h2>
+      <label>Description<input type="text" id="f_desc" required placeholder="e.g. Canteen lunch"></label>
+      <div class="form-row">
+        <label>Amount<input type="number" id="f_amount" required min="0" step="0.01" placeholder="0.00"></label>
+        <label>Type<select id="f_type"><option value="expense">Expense</option><option value="income">Income</option></select></label>
+      </div>
+      <div class="form-row">
+        <label>Category<select id="f_category"></select></label>
+        <label>Date<input type="date" id="f_date" required></label>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn-ghost" id="cancelBtn">Cancel</button>
+        <button type="submit" class="btn-primary">Save entry</button>
+      </div>
+    </form>
+  </div>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
   <script>
-    const CATEGORIES = [
-      { id: 'food', label: 'Food', color: '#C79A4B' },
-      { id: 'transport', label: 'Transport', color: '#7FB08A' },
-      { id: 'rent', label: 'Rent', color: '#8C9BC7' },
-      { id: 'utilities', label: 'Utilities', color: '#C9776C' },
-      { id: 'entertainment', label: 'Entertainment', color: '#B084C7' },
-      { id: 'shopping', label: 'Shopping', color: '#C7A084' },
-      { id: 'income', label: 'Income', color: '#7FB08A' },
-      { id: 'other', label: 'Other', color: '#9FB3BA' },
-    ];
-    function catInfo(id) { return CATEGORIES.find(c => c.id === id) || CATEGORIES[CATEGORIES.length - 1]; }
-    function seedData() {
-      const today = new Date();
-      const entries = [];
-      const sample = [
-        ['Canteen lunch', 90, 'expense', 'food'],
-        ['Auto to campus', 40, 'expense', 'transport'],
-        ['Hostel mess bill', 3200, 'expense', 'rent'],
-        ['Electricity share', 250, 'expense', 'utilities'],
-        ['Movie with friends', 300, 'expense', 'entertainment'],
-        ['New notebook set', 180, 'expense', 'shopping'],
-        ['Pocket money', 5000, 'income', 'income'],
-        ['Freelance logo gig', 1500, 'income', 'income'],
-        ['Grocery run', 420, 'expense', 'food'],
-        ['Bus pass recharge', 200, 'expense', 'transport'],
-      ];
-      for (let m = 5; m >= 0; m--) {
-        const base = new Date(today.getFullYear(), today.getMonth() - m, 1);
-        sample.forEach(([desc, amt, type, cat], i) => {
-          const day = 2 + ((i * 3) % 26);
-          entries.push({ id: `${m}-${i}`, date: new Date(base.getFullYear(), base.getMonth(), day).toISOString().slice(0, 10), description: desc, amount: amt, type, category: cat });
-        });
-      }
-      return entries;
-    }
-    let entries = seedData();
-    const money = n => '₹' + Math.round(n).toLocaleString('en-IN');
-    const monthKey = d => d.slice(0, 7);
-    const currentMonthKey = () => new Date().toISOString().slice(0, 7);
-    function monthLabel(key) { const [y, m] = key.split('-').map(Number); return new Date(y, m - 1, 1).toLocaleDateString('en-IN', { month: 'short' }); }
-    function lastNMonthKeys(n) { const out = []; const now = new Date(); for (let i = n - 1; i >= 0; i--) { const d = new Date(now.getFullYear(), now.getMonth() - i, 1); out.push(d.toISOString().slice(0, 7)); } return out; }
-    function computeTotals() { let income = 0, expense = 0; entries.forEach(e => { if (e.type === 'income') income += e.amount; else expense += e.amount; }); return { income, expense, net: income - expense }; }
-    function computeMonthTotals(key) { let income = 0, expense = 0; entries.filter(e => monthKey(e.date) === key).forEach(e => { if (e.type === 'income') income += e.amount; else expense += e.amount; }); return { income, expense }; }
-    function computeCategoryBreakdown(key) { const totals = {}; entries.filter(e => monthKey(e.date) === key && e.type === 'expense').forEach(e => { totals[e.category] = (totals[e.category] || 0) + e.amount; }); return totals; }
-    function entryRow(e) {
-      const cat = catInfo(e.category);
-      const sign = e.type === 'income' ? '+' : '−';
-      const cls = e.type === 'income' ? 'amount-positive' : 'amount-negative';
-      const dateFmt = new Date(e.date).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' });
-      return `<tr><td>${dateFmt}</td><td>${e.description}</td><td><span class="cat-pill">${cat.label}</span></td><td class="num ${cls}">${sign} ${money(e.amount)}</td></tr>`;
-    }
-    function renderTables() { const sorted = [...entries].sort((a, b) => b.date.localeCompare(a.date)); document.getElementById('recentBody').innerHTML = sorted.slice(0, 6).map(entryRow).join(''); document.getElementById('fullBody').innerHTML = sorted.map(entryRow).join(''); }
-    let flowChart, categoryChart;
-    function renderCharts() {
-      const style = getComputedStyle(document.documentElement);
-      const gold = style.getPropertyValue('--gold').trim();
-      const positive = style.getPropertyValue('--positive').trim();
-      const dim = style.getPropertyValue('--text-dim').trim();
-      const keys = lastNMonthKeys(6);
-      if (flowChart) flowChart.destroy();
-      flowChart = new Chart(document.getElementById('flowChart'), {
-        type: 'line',
-        data: { labels: keys.map(monthLabel), datasets: [ { label: 'Income', data: keys.map(k => computeMonthTotals(k).income), borderColor: positive, tension: 0.3 }, { label: 'Expense', data: keys.map(k => computeMonthTotals(k).expense), borderColor: gold, tension: 0.3 } ] },
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: dim } } }, scales: { x: { ticks: { color: dim }, grid: { display: false } }, y: { ticks: { color: dim } } } },
-      });
-      const mKey = currentMonthKey();
-      const breakdown = computeCategoryBreakdown(mKey);
-      const catIds = Object.keys(breakdown);
-      if (categoryChart) categoryChart.destroy();
-      categoryChart = new Chart(document.getElementById('categoryChart'), { type: 'doughnut', data: { labels: catIds.map(id => catInfo(id).label), datasets: [{ data: catIds.map(id => breakdown[id]), backgroundColor: catIds.map(id => catInfo(id).color), borderWidth: 0 }] }, options: { responsive: true, maintainAspectRatio: false, cutout: '68%', plugins: { legend: { display: false } } } });
-      const legend = document.getElementById('categoryLegend');
-      legend.innerHTML = catIds.length ? catIds.map(id => `<li><span class="swatch" style="background:${catInfo(id).color}"></span>${catInfo(id).label}<span class="amt">${money(breakdown[id])}</span></li>`).join('') : '<li>No expenses this month.</li>';
-    }
-    function renderStats() {
-      const totals = computeTotals();
-      document.getElementById('netBalance').textContent = money(totals.net);
-      document.getElementById('netBalanceSub').textContent = `${money(totals.income)} in · ${money(totals.expense)} out, all time`;
-      const mTotals = computeMonthTotals(currentMonthKey());
-      document.getElementById('monthIncome').textContent = money(mTotals.income);
-      document.getElementById('monthExpense').textContent = money(mTotals.expense);
-      const rate = mTotals.income > 0 ? Math.round(((mTotals.income - mTotals.expense) / mTotals.income) * 100) : 0;
-      document.getElementById('savingsRate').textContent = rate + '%';
-    }
-    function renderAll() { renderStats(); renderCharts(); renderTables(); }
-    document.querySelectorAll('.rail-btn[data-view]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.view').forEach(v => v.classList.add('is-hidden'));
-        document.getElementById(`view-${btn.dataset.view}`).classList.remove('is-hidden');
-        document.querySelectorAll('.rail-btn[data-view]').forEach(b => b.classList.remove('is-active'));
-        btn.classList.add('is-active');
-        document.getElementById('pageTitle').textContent = btn.dataset.view === 'ledger' ? 'Full ledger' : 'Overview';
-      });
+const CATEGORIES = [
+  { id: 'food', label: 'Food', color: '#C79A4B' },
+  { id: 'transport', label: 'Transport', color: '#7FB08A' },
+  { id: 'rent', label: 'Rent', color: '#8C9BC7' },
+  { id: 'utilities', label: 'Utilities', color: '#C9776C' },
+  { id: 'entertainment', label: 'Entertainment', color: '#B084C7' },
+  { id: 'shopping', label: 'Shopping', color: '#C7A084' },
+  { id: 'income', label: 'Income', color: '#7FB08A' },
+  { id: 'other', label: 'Other', color: '#9FB3BA' },
+];
+const STORAGE_KEY = 'ledger_entries_v1';
+const THEME_KEY = 'ledger_theme_v1';
+function catInfo(id) { return CATEGORIES.find(c => c.id === id) || CATEGORIES[CATEGORIES.length - 1]; }
+function seedData() {
+  const today = new Date();
+  const entries = [];
+  const sample = [
+    ['Canteen lunch', 90, 'expense', 'food'],
+    ['Auto to campus', 40, 'expense', 'transport'],
+    ['Hostel mess bill', 3200, 'expense', 'rent'],
+    ['Electricity share', 250, 'expense', 'utilities'],
+    ['Movie with friends', 300, 'expense', 'entertainment'],
+    ['New notebook set', 180, 'expense', 'shopping'],
+    ['Pocket money', 5000, 'income', 'income'],
+    ['Freelance logo gig', 1500, 'income', 'income'],
+    ['Grocery run', 420, 'expense', 'food'],
+    ['Bus pass recharge', 200, 'expense', 'transport'],
+  ];
+  for (let m = 5; m >= 0; m--) {
+    const base = new Date(today.getFullYear(), today.getMonth() - m, 1);
+    sample.forEach(([desc, amt, type, cat], i) => {
+      const day = 2 + ((i * 3) % 26);
+      const jitter = 0.85 + Math.random() * 0.3;
+      entries.push({ id: `${m}-${i}-${Date.now() + Math.random()}`, date: new Date(base.getFullYear(), base.getMonth(), day).toISOString().slice(0, 10), description: desc, amount: Math.round(amt * jitter), type, category: cat });
     });
-    document.getElementById('themeToggle').addEventListener('click', () => {
-      const html = document.documentElement;
-      const next = html.getAttribute('data-theme') === 'ink' ? 'paper' : 'ink';
-      html.setAttribute('data-theme', next);
-      document.body.setAttribute('data-theme', next);
-      renderAll();
-    });
-    renderAll();
+  }
+  return entries;
+}
+function loadEntries() {
+  const raw = localStorage.getItem(STORAGE_KEY);
+  if (raw) { try { return JSON.parse(raw); } catch (e) {} }
+  const seeded = seedData();
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(seeded));
+  return seeded;
+}
+function saveEntries(entries) { localStorage.setItem(STORAGE_KEY, JSON.stringify(entries)); }
+let entries = loadEntries();
+const money = n => '₹' + Math.round(n).toLocaleString('en-IN');
+const monthKey = d => d.slice(0, 7);
+const currentMonthKey = () => new Date().toISOString().slice(0, 7);
+function monthLabel(key) { const [y, m] = key.split('-').map(Number); return new Date(y, m - 1, 1).toLocaleDateString('en-IN', { month: 'short' }); }
+function lastNMonthKeys(n) { const out = []; const now = new Date(); for (let i = n - 1; i >= 0; i--) { const d = new Date(now.getFullYear(), now.getMonth() - i, 1); out.push(d.toISOString().slice(0, 7)); } return out; }
+function computeTotals() { let income = 0, expense = 0; entries.forEach(e => { if (e.type === 'income') income += e.amount; else expense += e.amount; }); return { income, expense, net: income - expense }; }
+function computeMonthTotals(key) { let income = 0, expense = 0; entries.filter(e => monthKey(e.date) === key).forEach(e => { if (e.type === 'income') income += e.amount; else expense += e.amount; }); return { income, expense }; }
+function computeCategoryBreakdown(key) { const totals = {}; entries.filter(e => monthKey(e.date) === key && e.type === 'expense').forEach(e => { totals[e.category] = (totals[e.category] || 0) + e.amount; }); return totals; }
+let flowChart, categoryChart;
+function renderOverview() {
+  const totals = computeTotals();
+  document.getElementById('netBalance').textContent = money(totals.net);
+  document.getElementById('netBalanceSub').textContent = `${money(totals.income)} in · ${money(totals.expense)} out, all time`;
+  const mKey = currentMonthKey();
+  const mTotals = computeMonthTotals(mKey);
+  document.getElementById('monthIncome').textContent = money(mTotals.income);
+  document.getElementById('monthExpense').textContent = money(mTotals.expense);
+  const rate = mTotals.income > 0 ? Math.round(((mTotals.income - mTotals.expense) / mTotals.income) * 100) : 0;
+  document.getElementById('savingsRate').textContent = rate + '%';
+  renderFlowChart(); renderCategoryChart(mKey); renderRecentTable();
+}
+function renderFlowChart() {
+  if (typeof Chart === 'undefined') return;
+  const keys = lastNMonthKeys(6);
+  const incomeData = keys.map(k => computeMonthTotals(k).income);
+  const expenseData = keys.map(k => computeMonthTotals(k).expense);
+  const labels = keys.map(monthLabel);
+  const style = getComputedStyle(document.documentElement);
+  const gold = style.getPropertyValue('--gold').trim();
+  const positive = style.getPropertyValue('--positive').trim();
+  const dim = style.getPropertyValue('--text-dim').trim();
+  if (flowChart) flowChart.destroy();
+  flowChart = new Chart(document.getElementById('flowChart'), {
+    type: 'line',
+    data: { labels, datasets: [ { label: 'Income', data: incomeData, borderColor: positive, backgroundColor: 'transparent', tension: 0.3, pointRadius: 3 }, { label: 'Expense', data: expenseData, borderColor: gold, backgroundColor: 'transparent', tension: 0.3, pointRadius: 3 } ] },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: dim, font: { family: 'IBM Plex Sans' } } } }, scales: { x: { ticks: { color: dim }, grid: { display: false } }, y: { ticks: { color: dim }, grid: { color: 'rgba(128,128,128,0.15)' } } } },
+  });
+}
+function renderCategoryChart(mKey) {
+  if (typeof Chart === 'undefined') return;
+  const breakdown = computeCategoryBreakdown(mKey);
+  const catIds = Object.keys(breakdown);
+  const labels = catIds.map(id => catInfo(id).label);
+  const data = catIds.map(id => breakdown[id]);
+  const colors = catIds.map(id => catInfo(id).color);
+  if (categoryChart) categoryChart.destroy();
+  categoryChart = new Chart(document.getElementById('categoryChart'), { type: 'doughnut', data: { labels, datasets: [{ data, backgroundColor: colors, borderWidth: 0 }] }, options: { responsive: true, maintainAspectRatio: false, cutout: '68%', plugins: { legend: { display: false } } } });
+  const legend = document.getElementById('categoryLegend');
+  legend.innerHTML = '';
+  if (catIds.length === 0) { legend.innerHTML = '<li>No expenses logged this month yet.</li>'; return; }
+  catIds.forEach((id, i) => { const li = document.createElement('li'); li.innerHTML = `<span class="swatch" style="background:${colors[i]}"></span>${labels[i]}<span class="amt">${money(data[i])}</span>`; legend.appendChild(li); });
+}
+function entryRow(e, withDelete) {
+  const cat = catInfo(e.category);
+  const sign = e.type === 'income' ? '+' : '−';
+  const cls = e.type === 'income' ? 'amount-positive' : 'amount-negative';
+  const dateFmt = new Date(e.date).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' });
+  return `<tr><td>${dateFmt}</td><td>${e.description}</td><td><span class="cat-pill">${cat.label}</span></td><td class="num ${cls}">${sign} ${money(e.amount)}</td>${withDelete ? `<td><button class="del-btn" data-id="${e.id}">Remove</button></td>` : ''}</tr>`;
+}
+function renderRecentTable() { const sorted = [...entries].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 6); document.getElementById('recentBody').innerHTML = sorted.map(e => entryRow(e, false)).join(''); }
+function renderFullTable() {
+  const catFilter = document.getElementById('filterCategory').value;
+  const typeFilter = document.getElementById('filterType').value;
+  const query = document.getElementById('searchInput').value.trim().toLowerCase();
+  let list = [...entries].sort((a, b) => b.date.localeCompare(a.date));
+  if (catFilter !== 'all') list = list.filter(e => e.category === catFilter);
+  if (typeFilter !== 'all') list = list.filter(e => e.type === typeFilter);
+  if (query) list = list.filter(e => e.description.toLowerCase().includes(query));
+  document.getElementById('fullBody').innerHTML = list.length ? list.map(e => entryRow(e, true)).join('') : '<tr><td colspan="5" style="color:var(--text-dim)">No entries match. Try clearing filters.</td></tr>';
+  document.querySelectorAll('.del-btn').forEach(btn => { btn.addEventListener('click', () => { entries = entries.filter(e => e.id !== btn.dataset.id); saveEntries(entries); renderFullTable(); renderOverview(); }); });
+}
+function populateCategorySelects() {
+  const filterSel = document.getElementById('filterCategory');
+  const formSel = document.getElementById('f_category');
+  CATEGORIES.forEach(c => { filterSel.insertAdjacentHTML('beforeend', `<option value="${c.id}">${c.label}</option>`); formSel.insertAdjacentHTML('beforeend', `<option value="${c.id}">${c.label}</option>`); });
+}
+function showView(name) {
+  document.querySelectorAll('.view').forEach(v => v.classList.add('is-hidden'));
+  document.getElementById(`view-${name}`).classList.remove('is-hidden');
+  document.querySelectorAll('.rail-btn[data-view]').forEach(b => b.classList.remove('is-active'));
+  const btn = document.querySelector(`.rail-btn[data-view="${name}"]`);
+  if (btn) btn.classList.add('is-active');
+  document.getElementById('pageTitle').textContent = name === 'ledger' ? 'Full ledger' : 'Overview';
+  if (name === 'ledger') renderFullTable();
+}
+function applyTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  document.body.setAttribute('data-theme', theme);
+  localStorage.setItem(THEME_KEY, theme);
+  renderOverview();
+  if (!document.getElementById('view-ledger').classList.contains('is-hidden')) renderFullTable();
+}
+function openModal() { document.getElementById('f_date').value = new Date().toISOString().slice(0, 10); document.getElementById('modalBackdrop').classList.remove('is-hidden'); }
+function closeModal() { document.getElementById('modalBackdrop').classList.add('is-hidden'); document.getElementById('entryForm').reset(); }
+document.addEventListener('DOMContentLoaded', () => {
+  populateCategorySelects();
+  const savedTheme = localStorage.getItem(THEME_KEY) || 'ink';
+  applyTheme(savedTheme);
+  document.querySelectorAll('.rail-btn[data-view]').forEach(btn => btn.addEventListener('click', () => showView(btn.dataset.view)));
+  document.querySelector('.theme-toggle').addEventListener('click', () => { const current = document.documentElement.getAttribute('data-theme'); applyTheme(current === 'ink' ? 'paper' : 'ink'); });
+  document.getElementById('addEntryBtn').addEventListener('click', openModal);
+  document.getElementById('cancelBtn').addEventListener('click', closeModal);
+  document.getElementById('modalBackdrop').addEventListener('click', e => { if (e.target.id === 'modalBackdrop') closeModal(); });
+  document.getElementById('entryForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const type = document.getElementById('f_type').value;
+    entries.push({ id: 'e-' + Date.now(), date: document.getElementById('f_date').value, description: document.getElementById('f_desc').value.trim() || 'Untitled entry', amount: parseFloat(document.getElementById('f_amount').value) || 0, type, category: type === 'income' ? 'income' : document.getElementById('f_category').value });
+    saveEntries(entries);
+    closeModal();
+    renderOverview();
+    if (!document.getElementById('view-ledger').classList.contains('is-hidden')) renderFullTable();
+  });
+  document.getElementById('seeAllLink').addEventListener('click', e => { e.preventDefault(); showView('ledger'); });
+  document.getElementById('filterCategory').addEventListener('change', renderFullTable);
+  document.getElementById('filterType').addEventListener('change', renderFullTable);
+  document.getElementById('searchInput').addEventListener('input', () => { if (!document.getElementById('view-ledger').classList.contains('is-hidden')) renderFullTable(); });
+});
   </script>
 </body>
 </html>
