@@ -1,18 +1,70 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="ink">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ledger — Personal Finance Dashboard</title>
+<title> Personal Finance Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root[data-theme="ink"] {
+  --bg: #10202B; --surface: #16303D; --surface-raised: #1C3948; --rule: #2A4956;
+  --text: #F1EAD8; --text-dim: #9FB3BA; --gold: #C79A4B; --gold-soft: rgba(199,154,75,0.15);
+  --positive: #7FB08A; --negative: #C9776C;
+}
+:root[data-theme="paper"] {
+  --bg: #EDEAE0; --surface: #F7F4EC; --surface-raised: #FFFFFF; --rule: #D8D2C2;
+  --text: #241E14; --text-dim: #6B6455; --gold: #9C7124; --gold-soft: rgba(156,113,36,0.12);
+  --positive: #3F7A50; --negative: #A03F32;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text); font-family: 'IBM Plex Sans', sans-serif; }
+h1, h2 { font-family: 'Source Serif 4', serif; font-weight: 600; margin: 0; }
+
+.app { display: flex; min-height: 100vh; flex-direction: column; }
+@media (min-width: 720px) { .app { flex-direction: row; } }
+
+.rail { display: flex; background: var(--surface); border-bottom: 1px solid var(--rule); align-items: center; padding: 10px 16px; gap: 10px; }
+@media (min-width: 720px) { .rail { width: 64px; flex-direction: column; border-bottom: none; border-right: 1px solid var(--rule); padding: 20px 0; } }
+
+.rail-mark { font-family: 'Source Serif 4', serif; font-size: 1.2rem; color: var(--gold); border: 1px solid var(--gold); width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; border-radius: 4px; }
+
+.rail-btn { border: none; background: transparent; color: var(--text-dim); border-radius: 6px; padding: 8px 12px; cursor: pointer; font-family: 'IBM Plex Sans', sans-serif; }
+.rail-btn:hover { color: var(--text); background: var(--gold-soft); }
+.rail-btn.is-active { color: var(--gold); background: var(--gold-soft); }
+.theme-toggle { margin-left: auto; }
+@media (min-width: 720px) { .theme-toggle { margin-left: 0; margin-top: auto; } }
+
+.main { flex: 1; padding: 20px 16px 60px; max-width: 1100px; width: 100%; }
+@media (min-width: 720px) { .main { padding: 32px 40px 60px; } }
+
+.topbar { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 22px; gap: 14px; flex-wrap: wrap; }
+.topbar-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+input, select { background: var(--surface); border: 1px solid var(--rule); color: var(--text); border-radius: 6px; padding: 9px 12px; }
+button#addEntryBtn { background: var(--gold); color: var(--bg); border: none; border-radius: 6px; padding: 9px 16px; font-weight: 600; cursor: pointer; }
+
+.view.is-hidden { display: none !important; }
+
+.hero-stamp { display: flex; justify-content: space-between; background: var(--surface); border: 1px solid var(--rule); border-radius: 10px; padding: 22px; margin-bottom: 20px; flex-wrap: wrap; gap: 20px; }
+.hero-stamp span:first-child { color: var(--text-dim); font-size: 0.85rem; }
+#netBalance { font-family: 'Source Serif 4', serif; font-size: 2.4rem; font-weight: 700; color: var(--gold); }
+
+.panel { background: var(--surface); border: 1px solid var(--rule); border-radius: 10px; padding: 18px; margin-bottom: 16px; overflow-x: auto; }
+
+table { width: 100%; border-collapse: collapse; }
+th { text-align: left; color: var(--text-dim); font-weight: 500; font-size: 0.75rem; text-transform: uppercase; border-bottom: 1px solid var(--rule); padding: 8px 6px; }
+td { padding: 10px 6px; border-bottom: 1px solid var(--rule); font-size: 0.87rem; }
+</style>
 </head>
-<body>
+<body data-theme="ink">
 
   <div class="app">
 
     <nav class="rail">
       <div class="rail-mark">L</div>
-      <button class="rail-btn" data-view="overview">Overview</button>
+      <button class="rail-btn is-active" data-view="overview">Overview</button>
       <button class="rail-btn" data-view="ledger">Ledger</button>
+      <button class="rail-btn theme-toggle" id="themeToggle">Theme</button>
     </nav>
 
     <main class="main">
@@ -28,14 +80,13 @@
         </div>
       </header>
 
-      <!-- OVERVIEW VIEW -->
       <section id="view-overview" class="view">
 
         <div class="hero-stamp">
           <div>
             <span>Net balance</span><br>
             <span id="netBalance">₹0</span><br>
-            <span id="netBalanceSub">—</span>
+            <span id="netBalanceSub" style="color:var(--text-dim); font-size:0.85rem;">—</span>
           </div>
           <div>
             <p>In — this month: <span id="monthIncome">₹0</span></p>
@@ -44,39 +95,56 @@
           </div>
         </div>
 
-        <h2>Cash flow, last 6 months</h2>
-        <p>(chart goes here — added in Stage 3)</p>
+        <div class="panel">
+          <h2>Cash flow, last 6 months</h2>
+          <p style="color:var(--text-dim)">(chart goes here — added in Stage 3)</p>
+        </div>
 
-        <h2>Where it went — this month</h2>
-        <p>(chart goes here — added in Stage 3)</p>
+        <div class="panel">
+          <h2>Where it went — this month</h2>
+          <p style="color:var(--text-dim)">(chart goes here — added in Stage 3)</p>
+        </div>
 
-        <h2>Recent entries</h2>
-        <table id="recentTable">
-          <thead>
-            <tr><th>Date</th><th>Description</th><th>Category</th><th>Amount</th></tr>
-          </thead>
-          <tbody id="recentBody">
-            <tr><td colspan="4">No data yet — added in Stage 3</td></tr>
-          </tbody>
-        </table>
+        <div class="panel">
+          <h2>Recent entries</h2>
+          <table id="recentTable">
+            <thead><tr><th>Date</th><th>Description</th><th>Category</th><th>Amount</th></tr></thead>
+            <tbody id="recentBody"><tr><td colspan="4" style="color:var(--text-dim)">No data yet — added in Stage 3</td></tr></tbody>
+          </table>
+        </div>
 
       </section>
 
-      <!-- LEDGER (full table) VIEW -->
-      <section id="view-ledger" class="view">
-        <h2>Full ledger</h2>
-        <table id="fullTable">
-          <thead>
-            <tr><th>Date</th><th>Description</th><th>Category</th><th>Amount</th><th></th></tr>
-          </thead>
-          <tbody id="fullBody">
-            <tr><td colspan="5">No data yet — added in Stage 3</td></tr>
-          </tbody>
-        </table>
+      <section id="view-ledger" class="view is-hidden">
+        <div class="panel">
+          <h2>Full ledger</h2>
+          <table id="fullTable">
+            <thead><tr><th>Date</th><th>Description</th><th>Category</th><th>Amount</th><th></th></tr></thead>
+            <tbody id="fullBody"><tr><td colspan="5" style="color:var(--text-dim)">No data yet — added in Stage 3</td></tr></tbody>
+          </table>
+        </div>
       </section>
 
     </main>
   </div>
 
+  <script>
+    document.querySelectorAll('.rail-btn[data-view]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.view').forEach(v => v.classList.add('is-hidden'));
+        document.getElementById(`view-${btn.dataset.view}`).classList.remove('is-hidden');
+        document.querySelectorAll('.rail-btn[data-view]').forEach(b => b.classList.remove('is-active'));
+        btn.classList.add('is-active');
+        document.getElementById('pageTitle').textContent = btn.dataset.view === 'ledger' ? 'Full ledger' : 'Overview';
+      });
+    });
+
+    document.getElementById('themeToggle').addEventListener('click', () => {
+      const html = document.documentElement;
+      const next = html.getAttribute('data-theme') === 'ink' ? 'paper' : 'ink';
+      html.setAttribute('data-theme', next);
+      document.body.setAttribute('data-theme', next);
+    });
+  </script>
 </body>
 </html>
